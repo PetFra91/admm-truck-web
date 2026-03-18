@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADMM-TRUCK s.r.o. – Náhradní díly pro nákladní automobily</title>
+<meta name="description" content="Prodej použitých náhradních dílů pro nákladní automobily a autobusy. DAF, IVECO, MAN, Mercedes-Benz, Renault, Scania, Volvo. Lišov u Českých Budějovic.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Variables ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold:    #D4A017;
+    --gold-lt: #F0B800;
+    --black:   #0f0f0f;
+    --dark:    #1a1a1a;
+    --gray:    #2a2a2a;
+    --mid:     #555;
+    --light:   #f0ede8;
+    --white:   #ffffff;
+    --font-head: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--light);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--gold);
+    color: var(--black);
+    font-family: var(--font-head);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 6px 0;
+    text-align: center;
+  }
+  .topbar a { color: var(--black); text-decoration: none; }
+  .topbar span { margin: 0 16px; }
+
+  /* ── HEADER / NAV ── */
+  header {
+    background: var(--black);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  nav {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .logo img {
+    height: 46px;
+    width: auto;
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 2px;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    color: var(--gold);
+    background: rgba(212,160,23,0.08);
+  }
+
+  /* Dropdown */
+  .nav-item { position: relative; }
+  .dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--dark);
+    border: 1px solid var(--gray);
+    border-top: 2px solid var(--gold);
+    min-width: 220px;
+    z-index: 2000;
+    padding: 6px 0;
+  }
+  .nav-item:hover .dropdown { display: block; }
+  .dropdown a {
+    display: block;
+    padding: 9px 18px;
+    font-size: 0.85rem;
+    border-radius: 0;
+    color: #ccc;
+  }
+  .dropdown a:hover { color: var(--gold); background: rgba(212,160,23,0.06); padding-left: 24px; }
+
+  .nav-cta {
+    background: var(--gold) !important;
+    color: var(--black) !important;
+    font-weight: 700 !important;
+    padding: 8px 18px !important;
+    border-radius: 2px !important;
+  }
+  .nav-cta:hover { background: var(--gold-lt) !important; color: var(--black) !important; }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+  }
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.3s;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 82vh;
+    min-height: 520px;
+    max-height: 800px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('https://webmium.blob.core.windows.net/users/51782/header-images/052fa101-0ed9-4071-84a4-113361b37368/27321927.jpg') center/cover no-repeat;
+    transform: scale(1.04);
+    transition: transform 8s ease;
+  }
+  .hero:hover .hero-bg { transform: scale(1.0); }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(0,0,0,0.88) 0%,
+      rgba(0,0,0,0.55) 55%,
+      rgba(0,0,0,0.15) 100%
+    );
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px 72px;
+    width: 100%;
+  }
+
+  .hero-label {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--black);
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    margin-bottom: 18px;
+  }
+
+  .hero h1 {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 0.95;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    color: rgba(255,255,255,0.75);
+    font-size: 1.1rem;
+    font-weight: 300;
+    max-width: 520px;
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,160,23,0.3); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,0.4);
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: var(--dark);
+    border-bottom: 3px solid var(--gold);
+  }
+  .stats-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .stat-item {
+    padding: 24px 20px;
+    border-right: 1px solid var(--gray);
+    text-align: center;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: 2.4rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  /* ── SECTION SHARED ── */
+  .section { padding: 80px 0; }
+  .section-inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+  .section-tag {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3rem);
+    text-transform: uppercase;
+    line-height: 1.0;
+    margin-bottom: 16px;
+  }
+
+  .section-lead {
+    font-size: 1.05rem;
+    color: var(--mid);
+    max-width: 600px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  /* ── AKTUÁLNÍ NABÍDKA BANNER ── */
+  .offer-banner {
+    background: var(--black);
+    padding: 28px 24px;
+    border-left: 5px solid var(--gold);
+    margin-bottom: 64px;
+  }
+  .offer-banner-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .offer-banner-label {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .offer-banner-text {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .offer-banner-text strong { color: var(--white); }
+  .offer-banner a.btn-primary { flex-shrink: 0; }
+
+  /* ── PROČ MY ── */
+  .why-section { background: var(--white); }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 48px;
+  }
+  .why-card {
+    background: var(--light);
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .why-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 3px;
+    background: var(--gold);
+    transition: width 0.4s;
+  }
+  .why-card:hover::before { width: 100%; }
+  .why-card:hover { background: var(--white); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+
+  .why-icon {
+    width: 52px; height: 52px;
+    background: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+  }
+  .why-card h3 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+  }
+  .why-card p { font-size: 0.95rem; color: var(--mid); line-height: 1.65; }
+
+  /* ── ZNAČKY ── */
+  .brands-section { background: var(--light); }
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 2px;
+    margin-top: 48px;
+  }
+  .brand-card {
+    background: var(--white);
+    padding: 28px 16px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--dark);
+    transition: all 0.25s;
+    border-bottom: 3px solid transparent;
+  }
+  .brand-card:hover {
+    background: var(--black);
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    transform: translateY(-3px);
+  }
+  .brand-card-name {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: block;
+  }
+  .brand-card-models {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--mid);
+    margin-top: 4px;
+    transition: color 0.25s;
+  }
+  .brand-card:hover .brand-card-models { color: rgba(255,255,255,0.5); }
+
+  /* ── GALERIE AREÁLU ── */
+  .gallery-section { background: var(--dark); }
+  .gallery-section .section-title { color: var(--white); }
+  .gallery-section .section-tag { color: var(--gold); }
+  .gallery-section .section-lead { color: rgba(255,255,255,0.5); }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 280px 280px;
+    gap: 4px;
+    margin-top: 48px;
+  }
+  .gallery-item {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .gallery-item:first-child { grid-row: span 2; }
+  .gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+  }
+  .gallery-item:hover img { transform: scale(1.06); }
+  .gallery-item-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0);
+    transition: background 0.3s;
+    display: flex; align-items: flex-end;
+  }
+  .gallery-item:hover .gallery-item-overlay { background: rgba(0,0,0,0.3); }
+
+  /* ── VÝKUP BANNER ── */
+  .vykup-banner {
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  .vykup-banner::before {
+    content: 'VÝKUP';
+    position: absolute;
+    right: -40px; top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: 18rem;
+    color: rgba(255,255,255,0.02);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+  .vykup-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 72px 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+  .vykup-inner h2 {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+  .vykup-inner h2 em { color: var(--gold); font-style: normal; }
+  .vykup-inner p { color: rgba(255,255,255,0.6); font-size: 1rem; line-height: 1.7; max-width: 540px; }
+
+  /* ── SLUŽBY ── */
+  .services-section { background: var(--white); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .service-card {
+    border: 1px solid #e0ddd8;
+    padding: 32px 28px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s;
+    display: block;
+  }
+  .service-card:hover { border-color: var(--gold); box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-3px); }
+  .service-card-icon {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .service-card h3 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+    color: var(--dark);
+  }
+  .service-card p { font-size: 0.9rem; color: var(--mid); line-height: 1.6; }
+  .service-card-arrow {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ── FORMULÁŘ ── */
+  .form-section { background: var(--light); }
+  .form-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .contact-info h3 {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .contact-block { margin-bottom: 20px; }
+  .contact-block-label {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .contact-block-value {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--dark);
+  }
+  .contact-block-value a { color: var(--dark); text-decoration: none; }
+  .contact-block-value a:hover { color: var(--gold); }
+
+  .hours-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .hours-table td { padding: 4px 0; font-size: 0.9rem; }
+  .hours-table td:first-child { color: var(--mid); width: 100px; }
+  .hours-table td:last-child { font-weight: 600; }
+
+  .map-embed {
+    margin-top: 28px;
+    border: 3px solid var(--gold);
+    overflow: hidden;
+  }
+  .map-embed iframe { display: block; }
+
+  /* Formulář */
+  .contact-form { background: var(--white); padding: 40px; }
+  .contact-form h3 {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block;
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 6px;
+  }
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    background: var(--light);
+    padding: 12px 14px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.2s;
+    border-radius: 0;
+    appearance: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--gold); background: var(--white); }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+
+  .form-notice {
+    font-size: 0.8rem;
+    color: var(--mid);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .btn-submit {
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .btn-submit:hover { background: var(--gold); color: var(--black); }
+
+  .form-success {
+    display: none;
+    background: #1a3a1a;
+    color: #6fcf6f;
+    border: 1px solid #2d5a2d;
+    padding: 16px;
+    margin-top: 16px;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    border-top: 3px solid var(--gold);
+  }
+
+  .footer-main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 56px 24px 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+  }
+
+  .footer-brand img { height: 52px; margin-bottom: 16px; display: block; }
+  .footer-brand p {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    max-width: 260px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 8px; }
+  .footer-col ul li a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--gray);
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .footer-bottom-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer-bottom p { color: rgba(255,255,255,0.3); font-size: 0.8rem; }
+  .footer-bottom a { color: rgba(255,255,255,0.4); text-decoration: none; }
+  .footer-bottom a:hover { color: var(--gold); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 70px; left: 0; right: 0;
+      background: var(--black);
+      border-top: 2px solid var(--gold);
+      padding: 12px 0 20px;
+      align-items: flex-start;
+    }
+    .nav-links.open a { padding: 10px 24px; width: 100%; }
+    .dropdown { position: static; border: none; border-top: 1px solid var(--gray); padding: 0 0 0 16px; background: transparent; display: block; }
+    .nav-item.open .dropdown { display: block; }
+
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .why-grid { grid-template-columns: 1fr; }
+    .brands-grid { grid-template-columns: repeat(3, 1fr); }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery-item:first-child { grid-column: span 2; grid-row: span 1; height: 240px; }
+    .gallery-item { height: 180px; }
+    .vykup-inner { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .form-layout { grid-template-columns: 1fr; gap: 40px; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-main { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .offer-banner-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+
+  @media (max-width: 560px) {
+    .hero { height: 92vh; }
+    .stats-inner { grid-template-columns: 1fr 1fr; }
+    .brands-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-main { grid-template-columns: 1fr; }
+    .footer-bottom-inner { flex-direction: column; text-align: center; }
+  }
+
+  /* ── Animations ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span>📞 <a href="tel:+420775587301">+420 775 587 301</a></span>
+  <span>|</span>
+  <span>📍 Lišov u Českých Budějovic</span>
+  <span>|</span>
+  <span>⏰ Po–Čt 9:00–17:00 &nbsp;|&nbsp; Pá 9:00–15:00</span>
+</div>
+
+<!-- HEADER -->
+<header>
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="/admm-truck-images/users/51782/logos/41d2d66c-1a5c-4b71-825c-8512fcfac826/57006981.png"
+           alt="ADMM Truck logo"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+      <span style="display:none; font-family:var(--font-head); font-weight:900; font-size:1.6rem; color:var(--gold); letter-spacing:0.04em;">ADMM<span style="color:var(--white);">TRUCK</span></span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Úvod</a></li>
+      <li><a href="o-nas.html">O nás</a></li>
+      <li><a href="https://www.admm.cz" target="_blank">E-SHOP</a></li>
+      <li class="nav-item">
+        <a href="vozidla.html">Vozidla ▾</a>
+        <div class="dropdown">
+          <a href="daf-cf.html">DAF CF</a>
+          <a href="daf-lf.html">DAF LF</a>
+          <a href="daf-xf.html">DAF XF</a>
+          <a href="mercedes-atego.html">Mercedes Atego</a>
+          <a href="mercedes-actros.html">Mercedes Actros</a>
+          <a href="renault-midlum.html">Renault Midlum</a>
+          <a href="renault-premium.html">Renault Premium</a>
+          <a href="man-tga.html">MAN TGA</a>
+          <a href="man-tgl.html">MAN TGL</a>
+          <a href="man-tgm.html">MAN TGM</a>
+          <a href="man-tgs.html">MAN TGS</a>
+          <a href="man-tgx.html">MAN TGX</a>
+          <a href="scania-r.html">Scania R</a>
+          <a href="volvo-fh.html">Volvo FH</a>
+          <a href="volvo-fl.html">Volvo FL</a>
+        </div>
+      </li>
+      <li><a href="autobusy.html">Autobusy</a></li>
+      <li class="nav-item">
+        <a href="vrakoviste.html">Vrakoviště ▾</a>
+        <div class="dropdown">
+          <a href="vrakoviste-daf.html">Vrakoviště – DAF</a>
+          <a href="vrakoviste-man.html">Vrakoviště – MAN</a>
+          <a href="vrakoviste-mercedes.html">Vrakoviště – Mercedes</a>
+          <a href="vrakoviste-renault.html">Vrakoviště – Renault</a>
+          <a href="vrakoviste-scania.html">Vrakoviště – Scania</a>
+          <a href="vrakoviste-volvo.html">Vrakoviště – Volvo</a>
+        </div>
+      </li>
+      <li><a href="vykup.html">Výkup</a></li>
+      <li><a href="eko-likvidace.html">EKO likvidace</a></li>
+      <li><a href="zprostredkovani-stk.html">STK</a></li>
+      <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-label">Lišov u Českých Budějovic · Od roku 2003</div>
+    <h1>Náhradní díly<br>pro <em>nákladní</em><br>automobily</h1>
+    <p class="hero-sub">Originální použité díly pro DAF, MAN, Mercedes, Renault, Scania, Volvo a další. Záruka kvality, příznivé ceny, kompletní sortiment skladem.</p>
+    <div class="hero-btns">
+      <a href="https://www.admm.cz" target="_blank" class="btn-primary">Přejít do E-shopu</a>
+      <a href="#kontakt" class="btn-outline">Poptávkový formulář</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">20+</div>
+      <div class="stat-label">let zkušeností</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">15</div>
+      <div class="stat-label">značek vozidel</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">skladem fyzicky</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">Záruka</div>
+      <div class="stat-label">na každý díl</div>
+    </div>
+  </div>
+</div>
+
+<!-- AKTUÁLNÍ NABÍDKA -->
+<div class="offer-banner">
+  <div class="offer-banner-inner">
+    <div class="offer-banner-label">⚡ Aktuální nabídka dílů</div>
+    <div class="offer-banner-text">
+      <strong>DAF</strong> CF, LF, XF &nbsp;·&nbsp;
+      <strong>IVECO</strong> Daily, Eurocargo, Stralis &nbsp;·&nbsp;
+      <strong>MAN</strong> L2000, TGA, TGL, TGM, TGS, TGX &nbsp;·&nbsp;
+      <strong>Mercedes-Benz</strong> Actros, Atego &nbsp;·&nbsp;
+      <strong>Renault</strong> Kerax, Magnum, Premium &nbsp;·&nbsp;
+      <strong>Scania</strong> 4, R &nbsp;·&nbsp;
+      <strong>Volvo</strong> FH, FL &nbsp;·&nbsp; autobusy BOVA, Irisbus, Neoplan, Setra
+    </div>
+    <a href="https://www.admm.cz" target="_blank" class="btn-primary">E-shop admm.cz</a>
+  </div>
+</div>
+
+<!-- PROČ KOUPIT U NÁS -->
+<section class="section why-section">
+  <div class="section-inner">
+    <div class="section-tag">Naše výhody</div>
+    <h2 class="section-title">Proč koupit použité<br>náhradní díly u nás?</h2>
+    <p class="section-lead">Spojujeme výhody originálních dílů s příznivou cenou. Každý díl máme fyzicky k dispozici ke kontrole.</p>
+
+    <div class="why-grid">
+      <div class="why-card fade-in">
+        <div class="why-icon">💰</div>
+        <h3>Příznivé ceny</h3>
+        <p>Oproti novým originálním dílům jsou ceny mnohonásobně nižší. Cena závisí na opotřebení – platíte jen za to, co dostanete.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-icon">✅</div>
+        <h3>Záruka kvality</h3>
+        <p>Na každý prodaný díl poskytujeme záruku. Stoprocentní funkčností jsme si tak jisti, že za ní ručíme.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-icon">🏭</div>
+        <h3>Originální díly</h3>
+        <p>Žádné levné repliky s nejistou kvalitou. Prodáváme pouze originální díly přímo z demontovaných vozidel.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-icon">📦</div>
+        <h3>Vše skladem</h3>
+        <p>Kompletní sortiment dílů máme fyzicky v Lišově u Českých Budějovic. Díl si lze osobně prohlédnout a okamžitě odvézt.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-icon">🛒</div>
+        <h3>E-shop admm.cz</h3>
+        <p>Od roku 2018 provozujeme také e-shop, kde najdete aktuální nabídku dílů s pohodlnou online objednávkou.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="why-icon">🔧</div>
+        <h3>Odborné poradenství</h3>
+        <p>Jsme skuteční odborníci v nákladní automobilové oblasti. Poradíme vám s výběrem správného dílu pro váš vůz.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ZNAČKY VOZIDEL -->
+<section class="section brands-section">
+  <div class="section-inner">
+    <div class="section-tag">Sortiment</div>
+    <h2 class="section-title">Díly pro tyto značky</h2>
+    <p class="section-lead">Specializujeme se na nákladní automobily a autobusy předních evropských výrobců.</p>
+
+    <div class="brands-grid">
+      <a href="daf-cf.html" class="brand-card">
+        <span class="brand-card-name">DAF</span>
+        <span class="brand-card-models">CF · LF · XF</span>
+      </a>
+      <a href="man-tga.html" class="brand-card">
+        <span class="brand-card-name">MAN</span>
+        <span class="brand-card-models">TGA · TGL · TGM · TGS · TGX</span>
+      </a>
+      <a href="mercedes-actros.html" class="brand-card">
+        <span class="brand-card-name">Mercedes</span>
+        <span class="brand-card-models">Actros · Atego</span>
+      </a>
+      <a href="renault-midlum.html" class="brand-card">
+        <span class="brand-card-name">Renault</span>
+        <span class="brand-card-models">Midlum · Premium · Magnum</span>
+      </a>
+      <a href="scania-r.html" class="brand-card">
+        <span class="brand-card-name">Scania</span>
+        <span class="brand-card-models">4 · R</span>
+      </a>
+      <a href="volvo-fh.html" class="brand-card">
+        <span class="brand-card-name">Volvo</span>
+        <span class="brand-card-models">FH · FL</span>
+      </a>
+      <a href="autobusy.html" class="brand-card">
+        <span class="brand-card-name">Iveco</span>
+        <span class="brand-card-models">Daily · Eurocargo · Stralis</span>
+      </a>
+      <a href="autobusy.html" class="brand-card">
+        <span class="brand-card-name">Autobusy</span>
+        <span class="brand-card-models">Bova · Irisbus · Neoplan · Setra</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE AREÁLU -->
+<section class="section gallery-section">
+  <div class="section-inner">
+    <div class="section-tag">Náš areál</div>
+    <h2 class="section-title" style="color:var(--white)">Areál ADMM-Truck</h2>
+    <p class="section-lead">Navštivte nás v Lišově u Českých Budějovic. Prohlédněte si díly osobně a okamžitě je odvezete.</p>
+
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="/admm-truck-images/users/51782/gallery-images/035b43f0-5e67-45ea-bc17-c400af62532b/59582402/homepageimage2476fb0d1dd53a2527001df1f0e7c0531.jpg" alt="Areál ADMM Truck">
+        <div class="gallery-item-overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/admm-truck-images/users/51782/gallery-images/035b43f0-5e67-45ea-bc17-c400af62532b/24989749/436014691112584245572023157826613470298112n.jpg" alt="ADMM Truck">
+        <div class="gallery-item-overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/admm-truck-images/users/51782/gallery-images/035b43f0-5e67-45ea-bc17-c400af62532b/57034710/sklad.jpg" alt="Sklad ADMM Truck">
+        <div class="gallery-item-overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/admm-truck-images/users/51782/header-images/052fa101-0ed9-4071-84a4-113361b37368/27321927.jpg" alt="ADMM Truck">
+        <div class="gallery-item-overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="/admm-truck-images/users/51782/header-images/1ed63aa0-9cc3-4bd9-8b1d-301b408994ad/62001025.jpg" alt="ADMM Truck">
+        <div class="gallery-item-overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VÝKUP BANNER -->
+<div class="vykup-banner">
+  <div class="vykup-inner">
+    <div>
+      <h2>Výkup nákladních<br>automobilů a <em>autobusů</em></h2>
+      <p>Vykupujeme vozidla od dopravců i leasingových společností. Havarovaná, poškozená nebo i vyhořelá vozidla – přijmeme vše. Kontaktujte nás pro nezávaznou nabídku.</p>
+    </div>
+    <a href="vykup.html" class="btn-primary">Více o výkupu</a>
+  </div>
+</div>
+
+<!-- DALŠÍ SLUŽBY -->
+<section class="section services-section">
+  <div class="section-inner">
+    <div class="section-tag">Služby</div>
+    <h2 class="section-title">Co ještě nabízíme</h2>
+
+    <div class="services-grid">
+      <a href="eko-likvidace.html" class="service-card">
+        <span class="service-card-icon">♻️</span>
+        <h3>EKO likvidace</h3>
+        <p>Ekologická likvidace vozidel v souladu s platnou legislativou. Postaráme se o správnou likvidaci vašeho vozu.</p>
+        <span class="service-card-arrow">Více →</span>
+      </a>
+      <a href="zprostredkovani-stk.html" class="service-card">
+        <span class="service-card-icon">🔍</span>
+        <h3>Zprostředkování STK</h3>
+        <p>Zprostředkujeme technickou kontrolu vašeho vozidla. Ušetříme vám čas a starosti s organizací STK.</p>
+        <span class="service-card-arrow">Více →</span>
+      </a>
+      <a href="vrakoviste.html" class="service-card">
+        <span class="service-card-icon">🚛</span>
+        <h3>Vrakoviště</h3>
+        <p>Rozsáhlé vrakoviště nákladních automobilů seřazené podle značek. DAF, MAN, Mercedes, Renault, Scania, Volvo.</p>
+        <span class="service-card-arrow">Prohlédnout →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT & FORMULÁŘ -->
+<section class="section form-section" id="kontakt">
+  <div class="section-inner">
+    <div class="section-tag">Kontakt</div>
+    <h2 class="section-title">Napište nám</h2>
+
+    <div class="form-layout">
+
+      <!-- Kontaktní info -->
+      <div class="contact-info">
+        <h3>ADMM-Truck s.r.o.</h3>
+
+        <div class="contact-block">
+          <div class="contact-block-label">Adresa</div>
+          <div class="contact-block-value">
+            Miletínská 376/19<br>
+            Lišov u Českých Budějovic<br>
+            373 72
+          </div>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-block-label">Telefon</div>
+          <div class="contact-block-value">
+            <a href="tel:+420775587301">+420 775 587 301</a> – p. Marek<br>
+            <a href="tel:+420722992492">+420 722 992 492</a> – p. Mazalovský
+          </div>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-block-label">E-mail</div>
+          <div class="contact-block-value">
+            <a href="mailto:info@admm-truck.com">info@admm-truck.com</a><br>
+            <a href="mailto:admm@admm-truck.com">admm@admm-truck.com</a><br>
+            <a href="mailto:e-shop@admm-truck.com">e-shop@admm-truck.com</a>
+          </div>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-block-label">IČ / DIČ</div>
+          <div class="contact-block-value">02940736 / CZ 02940736</div>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-block-label">Otevírací doba</div>
+          <div class="contact-block-value">
+            <table class="hours-table">
+              <tr><td>Po – Čt</td><td>9:00 – 17:00</td></tr>
+              <tr><td>Pátek</td><td>9:00 – 15:00</td></tr>
+              <tr><td>So – Ne</td><td>Zavřeno</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="map-embed">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2612.5!2d14.6507!3d48.9856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4773af5de6ae9b7%3A0x0!2zTWlsZXTDrW5za8OhIDM3Ni8xOSwgTGnFoW92!5e0!3m2!1scs!2scz!4v1700000000000"
+            width="100%" height="220" style="border:0;" allowfullscreen="" loading="lazy">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- Formulář -->
+      <div class="contact-form">
+        <h3>Poptávkový formulář</h3>
+        <form id="contactForm" action="send.php" method="POST">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Jméno</label>
+              <input type="text" id="name" name="name" placeholder="Vaše jméno">
+            </div>
+            <div class="form-group">
+              <label for="phone">Telefon</label>
+              <input type="tel" id="phone" name="phone" placeholder="+420 ...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail *</label>
+            <input type="email" id="email" name="email" placeholder="vas@email.cz" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Vaše zpráva *</label>
+            <textarea id="message" name="message" placeholder="Popište hledaný díl – typ vozidla, rok výroby, název dílu..." required></textarea>
+          </div>
+          <p class="form-notice">* Povinné pole. Vaše data jsou zpracovávána pouze za účelem odpovědi na váš dotaz.</p>
+          <button type="submit" class="btn-submit">Odeslat poptávku</button>
+          <div class="form-success" id="formSuccess">✓ Zpráva byla odeslána. Brzy se vám ozveme!</div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <img src="/admm-truck-images/users/51782/logos/41d2d66c-1a5c-4b71-825c-8512fcfac826/57006981.png"
+           alt="ADMM Truck"
+           onerror="this.style.display='none'">
+      <p>Prodej použitých náhradních dílů pro nákladní automobily a autobusy od roku 2003. Kompletní sortiment skladem v Lišově u Českých Budějovic.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigace</h4>
+      <ul>
+        <li><a href="index.html">Úvod</a></li>
+        <li><a href="o-nas.html">O nás</a></li>
+        <li><a href="https://www.admm.cz" target="_blank">E-shop</a></li>
+        <li><a href="vozidla.html">Vozidla</a></li>
+        <li><a href="autobusy.html">Autobusy</a></li>
+        <li><a href="vrakoviste.html">Vrakoviště</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Služby</h4>
+      <ul>
+        <li><a href="vykup.html">Výkup vozidel</a></li>
+        <li><a href="eko-likvidace.html">EKO likvidace</a></li>
+        <li><a href="zprostredkovani-stk.html">Zprostředkování STK</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Kontakt</h4>
+      <ul>
+        <li><a href="tel:+420775587301">+420 775 587 301</a></li>
+        <li><a href="tel:+420722992492">+420 722 992 492</a></li>
+        <li><a href="mailto:info@admm-truck.com">info@admm-truck.com</a></li>
+        <li style="color:rgba(255,255,255,0.3); font-size:0.85rem; margin-top:8px;">Miletínská 376/19<br>Lišov, 373 72</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <p>© 2024 ADMM-Truck s.r.o. Všechna práva vyhrazena.</p>
+      <p>IČ: 02940736 &nbsp;|&nbsp; DIČ: CZ 02940736</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Hamburger menu
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+});
+
+// Scroll fade-in
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Stagger children
+      const cards = e.target.parentElement.querySelectorAll('.fade-in');
+      cards.forEach((c, i) => {
+        c.style.transitionDelay = (i * 0.1) + 's';
+      });
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Formulář – basic submit handler
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  const email = document.getElementById('email').value;
+  const msg = document.getElementById('message').value;
+  if (!email || !msg) { e.preventDefault(); return; }
+  // PHP zpracuje formulář, ale pro vizuální zpětnou vazbu:
+  // Pokud PHP není dostupné, zobrazíme zprávu po submitu
+});
+</script>
+
+</body>
+</html>
