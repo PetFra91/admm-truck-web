@@ -53,6 +53,8 @@
 <div class="topbar">
   <span>📞 <a href="tel:+420775587301">+420 775 587 301</a></span>
   <span>|</span>
+  <span>📞 <a href="tel:+420722992492">+420 722 992 492</a></span>
+  <span>|</span>
   <span>📍 Lišov u Českých Budějovic</span>
   <span>|</span>
   <span>⏰ Po–Čt 9:00–17:00 &nbsp;|&nbsp; Pá 9:00–15:00</span>
@@ -136,12 +138,31 @@
   </ul></div>
 </div>
 <div class="footer-bottom"><div class="footer-bottom-inner">
-  <p>© 2025 ADMM-Truck s.r.o. Všechna práva vyhrazena.</p>
+  <p>© ADMM-Truck s.r.o. Všechna práva vyhrazena.</p>
   <p>IČ: 02940736 &nbsp;|&nbsp; DIČ: CZ 02940736</p>
 </div></div>
 </footer>
 <script>
 const hb=document.getElementById('hamburger'),nl=document.getElementById('navLinks');
 if(hb)hb.addEventListener('click',()=>nl.classList.toggle('open'));
+document.querySelectorAll('.nav-item > a').forEach(link=>{
+  link.addEventListener('click',function(e){
+    if(window.innerWidth<=900){
+      const dd=this.nextElementSibling;
+      if(dd&&dd.classList.contains('dropdown')){
+        e.preventDefault();
+        const p=this.parentElement;
+        document.querySelectorAll('.nav-item').forEach(i=>{if(i!==p)i.classList.remove('open');});
+        p.classList.toggle('open');
+      }
+    }
+  });
+});
+document.addEventListener('click',function(e){
+  if(!e.target.closest('nav')){
+    nl.classList.remove('open');
+    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('open'));
+  }
+});
 </script>
 </body></html>
