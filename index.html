@@ -119,10 +119,6 @@
     padding: 6px 0;
   }
   .nav-item:hover .dropdown { display: block; }
-  @media (max-width: 900px) {
-    .nav-item:hover .dropdown { display: none; }
-    .nav-item.open .dropdown { display: block; }
-  }
   .dropdown a {
     display: block;
     padding: 9px 18px;
@@ -768,7 +764,7 @@
       z-index: 999;
     }
     .nav-links.open a { padding: 10px 24px; width: 100%; }
-    .dropdown { position: static; border: none; border-top: 1px solid var(--gray); padding: 0 0 0 16px; background: transparent; display: block; }
+    .dropdown { position: static; border: none; border-top: 1px solid var(--gray); padding: 0 0 0 16px; background: transparent; display: none; }
     .nav-item.open .dropdown { display: block; }
 
     .stats-inner { grid-template-columns: repeat(2, 1fr); }
