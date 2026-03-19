@@ -1229,43 +1229,45 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// Hamburger menu
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var hb = document.getElementById('hamburger');
+  var nl = document.getElementById('navLinks');
+  if (!hb || !nl) return;
 
-if(hamburger && navLinks) {
-  hamburger.addEventListener('click', (e) => {
+  // Otevřít/zavřít menu
+  hb.addEventListener('click', function(e) {
     e.stopPropagation();
-    navLinks.classList.toggle('open');
-    hamburger.classList.toggle('active');
+    nl.classList.toggle('open');
   });
 
-  // Dropdown na mobilu
-  document.querySelectorAll('.nav-item > a').forEach(link => {
-    link.addEventListener('click', function(e) {
-      if (window.innerWidth <= 900) {
-        const dropdown = this.nextElementSibling;
-        if (dropdown && dropdown.classList.contains('dropdown')) {
-          e.preventDefault();
-          e.stopPropagation();
-          const parent = this.parentElement;
-          document.querySelectorAll('.nav-item').forEach(i => { if(i !== parent) i.classList.remove('open'); });
-          parent.classList.toggle('open');
-        }
+  // Dropdown na mobilu - klik na Vozidla/Vrakoviště
+  var navItems = document.querySelectorAll('.nav-item > a');
+  for (var i = 0; i < navItems.length; i++) {
+    navItems[i].addEventListener('click', function(e) {
+      if (window.innerWidth > 900) return;
+      var dd = this.nextElementSibling;
+      if (!dd || !dd.classList.contains('dropdown')) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var parent = this.parentElement;
+      var allItems = document.querySelectorAll('.nav-item');
+      for (var j = 0; j < allItems.length; j++) {
+        if (allItems[j] !== parent) allItems[j].classList.remove('open');
       }
+      parent.classList.toggle('open');
     });
-  });
+  }
 
-  // Zavřít klikem mimo
+  // Zavřít klikem mimo header
   document.addEventListener('click', function(e) {
-    if (navLinks.classList.contains('open') && !e.target.closest('header')) {
-      navLinks.classList.remove('open');
-      hamburger.classList.remove('active');
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+    if (!e.target.closest('header')) {
+      nl.classList.remove('open');
+      var items = document.querySelectorAll('.nav-item');
+      for (var k = 0; k < items.length; k++) items[k].classList.remove('open');
     }
   });
-}
+});
 
 // Scroll fade-in
 const observer = new IntersectionObserver((entries) => {
