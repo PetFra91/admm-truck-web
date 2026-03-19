@@ -146,6 +146,8 @@
     padding: 4px;
     background: none;
     border: none;
+    position: relative;
+    z-index: 1002;
   }
   .hamburger span {
     display: block;
@@ -761,7 +763,7 @@
       padding: 80px 0 20px;
       align-items: flex-start;
       overflow-y: auto;
-      z-index: 999;
+      z-index: 1001;
     }
     .nav-links.open a { padding: 10px 24px; width: 100%; }
     .dropdown { position: static; border: none; border-top: 1px solid var(--gray); padding: 0 0 0 16px; background: transparent; display: none; }
@@ -1261,7 +1263,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Zavřít klikem mimo header
   document.addEventListener('click', function(e) {
-    if (!e.target.closest('header')) {
+    if (!e.target.closest('.nav-links') && !e.target.closest('.hamburger')) {
       nl.classList.remove('open');
       var items = document.querySelectorAll('.nav-item');
       for (var k = 0; k < items.length; k++) items[k].classList.remove('open');
