@@ -788,11 +788,15 @@
 
   /* ── Animations ── */
   .fade-in {
-    opacity: 0;
-    transform: translateY(24px);
+    opacity: 1;
+    transform: none;
     transition: opacity 0.6s ease, transform 0.6s ease;
   }
-  .fade-in.visible { opacity: 1; transform: none; }
+  .fade-in.animate {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  .fade-in.animate.visible { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
