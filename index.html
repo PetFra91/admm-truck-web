@@ -765,7 +765,12 @@
       z-index: 1001;
     }
     #nav-check:checked ~ header #navLinks a { padding: 12px 16px; width: 100%; display: block; }
-    #nav-check:checked ~ header #navLinks .dropdown { display: block; position: static; border: none; padding: 0 0 0 16px; background: transparent; }
+    #nav-check:checked ~ header .dd-label { display: block !important; width: 100%; }
+    #nav-check:checked ~ header .dd-desktop { display: none; }
+    #nav-check:checked ~ header .dd-label a { padding: 12px 16px; width: 100%; display: block; }
+    #nav-check:checked ~ header #navLinks .dropdown { display: none; position: static; border: none; padding: 0 0 0 16px; background: transparent; }
+    #nav-check:checked ~ header .dd-toggle:checked ~ .dropdown { display: block !important; }
+    #nav-check:checked ~ header .dd-label { display: block; width: 100%; }
     #nav-check:checked ~ header .hamburger span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
     #nav-check:checked ~ header .hamburger span:nth-child(2) { opacity: 0; }
     #nav-check:checked ~ header .hamburger span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
@@ -834,7 +839,7 @@
       <li><a href="o-nas/">O nás</a></li>
       <li><a href="https://www.admm.cz" target="_blank">E-SHOP</a></li>
       <li class="nav-item">
-        <a href="vozidla/">Vozidla ▾</a>
+        <input type="checkbox" id="dd-vozidla" class="dd-toggle" style="display:none"><label for="dd-vozidla" class="dd-label" style="display:none"><a href="vozidla/" onclick="return false">Vozidla ▾</a></label><a href="vozidla/" class="dd-desktop">Vozidla ▾</a>
         <div class="dropdown">
           <a href="daf-cf/">DAF CF</a>
           <a href="daf-lf/">DAF LF</a>
@@ -855,7 +860,7 @@
       </li>
       <li><a href="autobusy/">Autobusy</a></li>
       <li class="nav-item">
-        <a href="vrakoviste/">Vrakoviště ▾</a>
+        <input type="checkbox" id="dd-vrakoviste" class="dd-toggle" style="display:none"><label for="dd-vrakoviste" class="dd-label" style="display:none"><a href="vrakoviste/" onclick="return false">Vrakoviště ▾</a></label><a href="vrakoviste/" class="dd-desktop">Vrakoviště ▾</a>
         <div class="dropdown">
           <a href="vrakoviste---daf/">Vrakoviště – DAF</a>
           <a href="vrakoviste---man/">Vrakoviště – MAN</a>
